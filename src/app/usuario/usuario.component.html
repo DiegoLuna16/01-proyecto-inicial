@@ -1,6 +1,6 @@
 <div>
-  <button (click)="alSeleccionarUsuario()">
+  <button [class.active]="seleccionado" (click)="alSeleccionarUsuario()">
     <img [src]="rutaImagen" />
-    <span>{{ nombre }}</span>
+    <span>{{ usuario.nombre }}</span>
   </button>
 </div>
