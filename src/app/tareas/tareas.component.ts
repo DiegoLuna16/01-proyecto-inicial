@@ -1,43 +1,32 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { TareaComponent } from './tarea/tarea.component';
+import { TareaNuevaComponent } from './tarea-nueva/tarea-nueva.component';
+import { NuevaTarea } from './tarea/tarea.model';
+import { TareasService } from './tareas.service';
 
 @Component({
   selector: 'app-tareas',
-  imports: [TareaComponent],
+  imports: [TareaComponent, TareaNuevaComponent],
   templateUrl: './tareas.component.html',
   styleUrl: './tareas.component.css',
 })
 export class TareasComponent {
   @Input({ required: true }) idUsuario!: string;
   @Input({ required: true }) nombre!: string;
+  estaAgregandoTareaNueva = false;
+  //tareasService = inject(TareasService)
 
-  tareas = [
-    {
-      id: 't1',
-      idUsuario: 'u1',
-      titulo: 'Dominar Angular',
-      resumen:
-        'Apreder todas las características básicas y avanzasAngular cómo apicarlas.',
-      expira: '2025-01-01',
-    },
-    {
-      id: 't2',
-      idUsuario: 'u3',
-      titulo: 'Crear el primer prototipo',
-      resumen: 'Crear el primer prototipo del sitio web de la tienda',
-      expira: '2025-11-05',
-    },
-    {
-      id: 't3',
-      idUsuario: 'u3',
-      titulo: 'Preparar la plantilla del carrito',
-      resumen:
-        'Preparar y describir una plantilla de carrito de compras de la tienda online',
-      expira: '2025-05-16',
-    },
-  ];
+  constructor(private tareasService: TareasService) {}
 
-  get tareasUsuarioSeleccionado () {
-    return this.tareas.filter((tarea) => tarea.idUsuario === this.idUsuario)
+  get tareasUsuarioSeleccionado() {
+    return this.tareasService.obtenerTareasDeUsuario(this.idUsuario);
+  }
+
+  abrirTareaNueva() {
+    this.estaAgregandoTareaNueva = true;
+  }
+
+  cerrarTareaNueva() {
+    this.estaAgregandoTareaNueva = false;
   }
 }
